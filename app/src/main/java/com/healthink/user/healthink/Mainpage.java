@@ -10,4 +10,6 @@ public class Mainpage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
     }
+
+    //ini contoh , nanti hapus aja, ganti yang baru
 }
