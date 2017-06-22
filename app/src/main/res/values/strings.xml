@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Healthink</string>
+
+    <string name="title_activity_introduction">Introduction</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_login">Sign in</string>
+
+
+    <string name="title_activity_home">Home</string>
+    <string name="title_home">Home</string>
+    <string name="title_location">Location</string>
+    <string name="title_timeline">Timeline</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_activity_main">Main</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

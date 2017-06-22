@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.healthink.user.healthink.Into">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="385dp"
+        android:layout_height="513dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/background"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-1dp"
+        app:layout_constraintHorizontal_bias="0.47" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="183dp"
+        android:layout_height="214dp"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="101dp"
+        tools:layout_editor_absoluteY="34dp" />
+
+
+
+    <Button
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="165dp"
+        android:layout_height="50dp"
+        android:background="?android:attr/colorActivatedHighlight"
+        android:elevation="7dp"
+        android:text="Sign Up"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="372dp" />
+
+    <Button
+        android:id="@+id/button3"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="165dp"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:elevation="7dp"
+        android:text="Log In"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="302dp" />
+</android.support.constraint.ConstraintLayout>
