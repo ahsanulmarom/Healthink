@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "703705720280",
-    "firebase_url": "https://healthink-9d613.firebaseio.com",
-    "project_id": "healthink-9d613",
-    "storage_bucket": "healthink-9d613.appspot.com"
+    "project_number": "329262518169",
+    "firebase_url": "https://healthink-a975c.firebaseio.com",
+    "project_id": "healthink-a975c",
+    "storage_bucket": "healthink-a975c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:703705720280:android:a2829d835509f89d",
+        "mobilesdk_app_id": "1:329262518169:android:a2829d835509f89d",
         "android_client_info": {
           "package_name": "com.healthink.user.healthink"
         }
       },
       "oauth_client": [
         {
-          "client_id": "703705720280-vq0f47a5ud61huubb7t822aikqapct9s.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.healthink.user.healthink",
-            "certificate_hash": "a8eaa436c7baf3469a95220551fa25085d30bba0"
-          }
-        },
-        {
-          "client_id": "703705720280-rjpudklbhuns66ts5rn0pja13akbtau4.apps.googleusercontent.com",
+          "client_id": "329262518169-e6au390ra7mpbtr69aosrdjkp40k47q9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBoVj6aPd6TU4a-HUIojEPMmqeANiUN5j8"
+          "current_key": "AIzaSyCABf8tF52WFWm_M4yW5qDFqE-S22IjNoA"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "703705720280-rjpudklbhuns66ts5rn0pja13akbtau4.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
