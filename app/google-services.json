@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "703705720280-vq0f47a5ud61huubb7t822aikqapct9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthink.user.healthink",
+            "certificate_hash": "a8eaa436c7baf3469a95220551fa25085d30bba0"
+          }
+        },
+        {
           "client_id": "703705720280-rjpudklbhuns66ts5rn0pja13akbtau4.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703705720280-rjpudklbhuns66ts5rn0pja13akbtau4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
