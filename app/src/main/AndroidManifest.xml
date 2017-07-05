@@ -14,16 +14,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Into">
+        <activity
+            android:name="com.healthink.user.healthink.Into"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".Home" />
+        <activity android:name="com.healthink.user.healthink.Login" android:label="@string/app_name" />
+        <activity android:name="com.healthink.user.healthink.SignUp" android:label="@string/app_name" />
+        <activity android:name="com.healthink.user.healthink.Home" android:label="@string/app_name" />
     </application>
 
 </manifest>

@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.healthink.user.healthink.Into">
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="385dp"
@@ -55,4 +54,5 @@
         android:text="Log In"
         tools:layout_editor_absoluteX="110dp"
         tools:layout_editor_absoluteY="302dp" />
+
 </android.support.constraint.ConstraintLayout>
