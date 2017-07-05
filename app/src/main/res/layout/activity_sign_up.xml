@@ -39,7 +39,7 @@
         tools:layout_editor_absoluteY="284dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/signup_username"
         android:layout_width="277dp"
         android:layout_height="32dp"
         android:ems="10"
@@ -49,7 +49,7 @@
         tools:layout_editor_absoluteY="93dp" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/signup_email"
         android:layout_width="277dp"
         android:layout_height="32dp"
         android:ems="10"
@@ -58,7 +58,7 @@
         tools:layout_editor_absoluteY="160dp" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/signup_password"
         android:layout_width="277dp"
         android:layout_height="32dp"
         android:ems="10"
@@ -68,7 +68,7 @@
         tools:layout_editor_absoluteY="234dp" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/signup_repassword"
         android:layout_width="277dp"
         android:layout_height="32dp"
         android:ems="10"
@@ -78,7 +78,7 @@
         tools:layout_editor_absoluteY="305dp" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/chkTaC"
         style="@android:style/Widget.Holo.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
         tools:layout_editor_absoluteY="205dp" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/signup_submit"
         android:layout_width="277dp"
         android:layout_height="50dp"
         android:background="@drawable/roundtxtbar"
