@@ -1,5 +1,6 @@
 package com.healthink.user.healthink;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -87,7 +88,7 @@ public class SignUp extends AppCompatActivity {
                             Toast.makeText(SignUp.this, "Proses Pendaftaran Berhasil! Silakan Login dengan Email dan Password Anda!",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // Go to Home
+                        startActivity(new Intent(SignUp.this, Home.class));
                     }
                 });
     }

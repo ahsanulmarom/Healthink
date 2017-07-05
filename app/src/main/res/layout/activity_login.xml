@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/imageView3"
-            android:text="Username"
+            android:text="Email"
             tools:layout_editor_absoluteY="117dp"
             tools:layout_editor_absoluteX="82dp" />
 
@@ -39,7 +39,7 @@
             tools:layout_editor_absoluteX="53dp" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/login_email"
         android:layout_width="277dp"
         android:layout_height="41dp"
         android:ems="10"
@@ -49,7 +49,7 @@
         tools:layout_editor_absoluteY="144dp" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/login_password"
         android:layout_width="277dp"
         android:layout_height="41dp"
         android:ems="10"
@@ -67,7 +67,7 @@
         tools:layout_editor_absoluteY="203dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_btnSignUp"
         android:layout_width="277dp"
         android:layout_height="57dp"
         android:background="@drawable/roundbtn"
@@ -78,7 +78,7 @@
         tools:layout_editor_absoluteY="409dp" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/login_btnLogin"
         android:layout_width="277dp"
         android:layout_height="57dp"
         android:background="@drawable/roundbtn"
