@@ -84,10 +84,11 @@ public class SignUp extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(SignUp.this, "Proses Pendaftaran Gagal",
                                     Toast.LENGTH_SHORT).show();
+                        } else if(task.isSuccessful()) {
+                            Toast.makeText(SignUp.this, "Proses Pendaftaran Berhasil! Silakan Login dengan Email dan Password Anda!",
+                                    Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignUp.this, Home.class));
                         }
-                        Toast.makeText(SignUp.this, "Proses Pendaftaran Berhasil! Silakan Login dengan Email dan Password Anda!",
-                                Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignUp.this, Home.class));
                     }
                 });
     }

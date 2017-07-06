@@ -84,9 +84,9 @@ public class Login extends AppCompatActivity {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(Login.this, "Sorry, Your Email or Password is Incorrect. Please try again!",
                                     Toast.LENGTH_SHORT).show();
+                        } else if (task.isSuccessful()) {
+                            startActivity(new Intent(Login.this, Home.class));
                         }
-
-                        startActivity(new Intent(Login.this, Home.class));
                     }
                 });
     }
