@@ -1,10 +1,10 @@
 package com.healthink.user.healthink;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
 
-public class Home extends Activity {
+public class Home extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

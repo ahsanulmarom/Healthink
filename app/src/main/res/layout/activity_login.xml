@@ -51,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="41dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:background="@drawable/roundbtn"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
