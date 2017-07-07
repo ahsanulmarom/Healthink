@@ -81,14 +81,28 @@ public class Login extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
+                            checkIfEmailVerified();
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(Login.this, "Sorry, Your Email or Password is Incorrect. Please try again!",
                                     Toast.LENGTH_SHORT).show();
                         } else if (task.isSuccessful()) {
-                            startActivity(new Intent(Login.this, Home.class));
+                           checkIfEmailVerified();
                         }
                     }
                 });
+    }
+
+    private void checkIfEmailVerified() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user.isEmailVerified()) {
+            // user is verified, so you can finish this activity or send user to activity which you want.
+            startActivity(new Intent(Login.this, Home.class));
+        }
+        else {
+            Toast.makeText(Login.this, "Sorry, Please Check Email and Verify Your Account!",
+                    Toast.LENGTH_SHORT).show();
+            FirebaseAuth.getInstance().signOut();
+        }
     }
 
     @Override

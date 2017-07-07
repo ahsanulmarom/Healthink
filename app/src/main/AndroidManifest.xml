@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme >
         <activity
-            android:name="com.healthink.user.healthink.Into"
+            android:name="com.healthink.user.healthink.Splash"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
@@ -24,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.healthink.user.healthink.Into"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.healthink.user.healthink.Login"
             android:label="@string/app_name"

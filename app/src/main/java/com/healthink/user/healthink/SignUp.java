@@ -38,6 +38,7 @@ public class SignUp extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User sedang login
+                    sendVerificationEmail();
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User sedang logout
@@ -97,8 +98,31 @@ public class SignUp extends AppCompatActivity {
                             userData.child("UserData").child(user.getUid()).child("username").setValue(username.getText().toString().trim());
                             Toast.makeText(SignUp.this, "Proses Pendaftaran Berhasil! Silakan Login dengan Email dan Password Anda!",
                                     Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignUp.this, Home.class));
+                        }
+                    }
+                });
+    }
 
+    private void sendVerificationEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // email sent
+                            // after email is sent just logout the user and finish this activity
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(SignUp.this, Login.class));
+                            finish();
+                        }
+                        else {
+                            // email not sent, so display message and restart the activity or do whatever you wish to do
+                            //restart this activity
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(getIntent());
                         }
                     }
                 });
