@@ -15,10 +15,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity {
 
     private EditText username, email, password, repassword;
+    String uname, mail;
     private Button submit;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
@@ -44,7 +47,9 @@ public class SignUp extends AppCompatActivity {
         };
 
         username = (EditText) findViewById(R.id.signup_username);
+        uname = username.getText().toString().trim();
         email = (EditText) findViewById(R.id.signup_email);
+        mail = email.getText().toString().trim();
         password = (EditText) findViewById(R.id.signup_password);
         repassword = (EditText) findViewById(R.id.signup_repassword);
         submit = (Button) findViewById(R.id.signup_submit);
@@ -71,8 +76,8 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-    private void signUp(final String email, String password){
-        fAuth.createUserWithEmailAndPassword(email, password)
+    private void signUp(final String mail, String password) {
+        fAuth.createUserWithEmailAndPassword(mail, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -82,12 +87,18 @@ public class SignUp extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignUp.this, "Proses Pendaftaran Gagal",
+                            Toast.makeText(SignUp.this, "Proses Pendaftaran Gagal. Email telah terdaftar.",
                                     Toast.LENGTH_SHORT).show();
-                        } else if(task.isSuccessful()) {
+                        } else if (task.isSuccessful()) {
+                            FirebaseUser user = fAuth.getCurrentUser();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference userData = database.getReference();
+                            userData.child("UserData").child(user.getUid()).child("email").setValue(email.getText().toString().trim());
+                            userData.child("UserData").child(user.getUid()).child("username").setValue(username.getText().toString().trim());
                             Toast.makeText(SignUp.this, "Proses Pendaftaran Berhasil! Silakan Login dengan Email dan Password Anda!",
                                     Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUp.this, Home.class));
+
                         }
                     }
                 });
