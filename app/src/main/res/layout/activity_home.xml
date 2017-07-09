@@ -58,6 +58,7 @@
 
     <TextView
         android:id="@+id/cobaemail"
+        android:textSize="20px"
         android:layout_width="100dp"
         android:layout_height="100dp"
         tools:layout_editor_absoluteY="106dp"
@@ -66,6 +67,7 @@
     <TextView
         android:id="@+id/cobausername"
         android:layout_width="100dp"
+        android:textSize="20px"
         android:layout_height="100dp"
         tools:layout_editor_absoluteY="259dp"
         tools:layout_editor_absoluteX="142dp" />

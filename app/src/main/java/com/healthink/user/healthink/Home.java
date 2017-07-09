@@ -1,6 +1,8 @@
 package com.healthink.user.healthink;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,10 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Home extends AppCompatActivity {
 
-    TextView email, uname;
+    TextView imel, uname;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
-    private static final String TAG = SignUp.class.getSimpleName();
+    private static final String TAG = Home.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,28 +29,60 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
-        email = (TextView) findViewById(R.id.cobaemail);
+        imel = (TextView) findViewById(R.id.cobaemail);
         uname = (TextView) findViewById(R.id.cobausername);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference userData = database.getReference();
-        userData.addValueEventListener(new ValueEventListener() {
+        fAuth = FirebaseAuth.getInstance();
+        fStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseUser user = fAuth.getCurrentUser();
-                String mail = (String) dataSnapshot.child("userData").child(user.getUid())
-                        .child("email").getValue();
-                email.setText(mail);
-                String username = (String) dataSnapshot.child("userData").child(user.getUid())
-                        .child("username").getValue();
-                uname.setText(username);
-            }
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User sedang login
+                    Log.e(TAG, user.getUid());
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference userData = database.getReference();
+                    userData.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            FirebaseUser user = fAuth.getCurrentUser();
+                            String mail = dataSnapshot.child("userData").child(user.getUid())
+                                    .child("email").getValue(String.class);
+                            imel.setText(mail);
+                            Log.e(TAG, "emailnya: " + mail);
+                            String username = dataSnapshot.child("userData").child(user.getUid())
+                                    .child("username").getValue(String.class);
+                            uname.setText(username);
+                            Log.e(TAG, "usernamenya:" + username);
+                        }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                            Log.w(TAG, "Failed to read value.", error.toException());
+                        }
+                    });
+                } else {
+                    // User sedang logout
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    startActivity(new Intent(Home.this, Into.class));
+                }
             }
-        });
+        };
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fAuth.addAuthStateListener(fStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (fStateListener != null) {
+            fAuth.removeAuthStateListener(fStateListener);
+        }
     }
 }

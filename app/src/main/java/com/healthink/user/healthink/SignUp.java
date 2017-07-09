@@ -38,7 +38,9 @@ public class SignUp extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User sedang login
-                    sendVerificationEmail();
+                    if(!(user.isEmailVerified())) {
+                        sendVerificationEmail();
+                    }
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User sedang logout
@@ -88,7 +90,7 @@ public class SignUp extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignUp.this, "Proses Pendaftaran Gagal. Email telah terdaftar.",
+                            Toast.makeText(SignUp.this, "Failed to sign up. Email has been registered.",
                                     Toast.LENGTH_SHORT).show();
                         } else if (task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
@@ -96,7 +98,7 @@ public class SignUp extends AppCompatActivity {
                             DatabaseReference userData = database.getReference();
                             userData.child("UserData").child(user.getUid()).child("email").setValue(email.getText().toString().trim());
                             userData.child("UserData").child(user.getUid()).child("username").setValue(username.getText().toString().trim());
-                            Toast.makeText(SignUp.this, "Proses Pendaftaran Berhasil! Silakan Login dengan Email dan Password Anda!",
+                            Toast.makeText(SignUp.this, "Sign up Successfully. Please check email to verify account! ",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
