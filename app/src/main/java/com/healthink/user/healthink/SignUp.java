@@ -96,8 +96,8 @@ public class SignUp extends AppCompatActivity {
                             FirebaseUser user = fAuth.getCurrentUser();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference userData = database.getReference();
-                            userData.child("UserData").child(user.getUid()).child("email").setValue(email.getText().toString().trim());
-                            userData.child("UserData").child(user.getUid()).child("username").setValue(username.getText().toString().trim());
+                            userData.child("userData").child(user.getUid()).child("email").setValue(email.getText().toString().trim());
+                            userData.child("userData").child(user.getUid()).child("username").setValue(username.getText().toString().trim());
                             Toast.makeText(SignUp.this, "Sign up Successfully. Please check email to verify account! ",
                                     Toast.LENGTH_SHORT).show();
                         }

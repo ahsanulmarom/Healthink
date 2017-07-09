@@ -39,24 +39,27 @@ public class Home extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User sedang login
-                    Log.e(TAG, user.getUid());
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference userData = database.getReference();
-                    userData.addValueEventListener(new ValueEventListener() {
+                    DatabaseReference userData = database.getReference("userData").child(user.getUid());
+                    userData.child("email").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            FirebaseUser user = fAuth.getCurrentUser();
-                            String mail = dataSnapshot.child("userData").child(user.getUid())
-                                    .child("email").getValue(String.class);
-                            imel.setText(mail);
-                            Log.e(TAG, "emailnya: " + mail);
-                            String username = dataSnapshot.child("userData").child(user.getUid())
-                                    .child("username").getValue(String.class);
-                            uname.setText(username);
-                            Log.e(TAG, "usernamenya:" + username);
+                            String email = dataSnapshot.getValue(String.class);
+                            imel.setText("emailnya: " + email);
                         }
-
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                            Log.w(TAG, "Failed to read value.", error.toException());
+                        }
+                    });
+                    userData.child("username").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String username = dataSnapshot.getValue(String.class);
+                            uname.setText("usernamenya: " + username);
+                        }
                         @Override
                         public void onCancelled(DatabaseError error) {
                             // Failed to read value
