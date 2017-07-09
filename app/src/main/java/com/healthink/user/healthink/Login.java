@@ -81,7 +81,6 @@ public class Login extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            checkIfEmailVerified();
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(Login.this, "Sorry, Your Email or Password is Incorrect. Please try again!",
                                     Toast.LENGTH_SHORT).show();
