@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Healthink</string>
+    <string name="app_name">OneCare</string>
 
     <string name="title_activity_introduction">Introduction</string>
     <string name="dummy_button">Dummy Button</string>
@@ -15,4 +15,6 @@
     <string name="title_activity_main">Main</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="tab1">Semua Layanan</string>
 </resources>
