@@ -11,10 +11,15 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Home extends AppCompatActivity {
 
-    TextView judul;
+    TextView judul, namatampil;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = Home.class.getSimpleName();
@@ -22,11 +27,6 @@ public class Home extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        judul = (TextView) findViewById(R.id.judul);
-        judul.setText("Home");
-
         fAuth = FirebaseAuth.getInstance();
         fStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -35,6 +35,12 @@ public class Home extends AppCompatActivity {
                 if (user != null) {
                     // User sedang login
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    setContentView(R.layout.activity_home);
+                    judul = (TextView) findViewById(R.id.judul);
+                    namatampil = (TextView) findViewById(R.id.home_displayName);
+                    judul.setText("Home");
+
+                    homeMenu();
                     navigationMenu();
                 } else {
                     // User sedang logout
@@ -43,6 +49,7 @@ public class Home extends AppCompatActivity {
                 }
             }
         };
+        super.onCreate(savedInstanceState);
     }
 
     public void navigationMenu() {
@@ -54,20 +61,61 @@ public class Home extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.navigation_home :
                         judul.setText("Home");
+                        homeMenu();
                         break;
                     case R.id.navigation_chat :
                         judul.setText("Chat");
+                        chatMenu();
                         break;
                     case R.id.navigation_timeline :
                         judul.setText("Timeline");
+                        timelineMenu();
                         break;
                     case R.id.navigation_location :
                         judul.setText("Location");
+                        locationMenu();
                         break;
                 }
                 return true;
             }
         });
+    }
+
+    public void homeMenu() {
+        FirebaseUser user = fAuth.getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userData = database.getReference("userData");
+        userData.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserData userdata = new UserData();
+                if(dataSnapshot.child("displayName").getValue(String.class) == null ||
+                        dataSnapshot.child("displayName").getValue(String.class) == "") {
+                    userdata.setDisplayName(dataSnapshot.child("username").getValue(String.class));
+                } else {
+                    userdata.setDisplayName(dataSnapshot.child("displayName").getValue(String.class));
+                }
+                Log.e(TAG, "onDataChange: " + userdata.getDisplayName() );
+                namatampil.setText(userdata.getDisplayName());
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    public void chatMenu() {
+        namatampil.setText("");
+    }
+
+    public void timelineMenu() {
+        namatampil.setText("");
+    }
+
+    public void locationMenu() {
+        namatampil.setText("");
     }
 
     @Override

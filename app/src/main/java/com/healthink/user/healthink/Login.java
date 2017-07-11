@@ -3,17 +3,16 @@ package com.healthink.user.healthink;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,8 +34,6 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
         fAuth = FirebaseAuth.getInstance();
         fStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -45,6 +42,7 @@ public class Login extends AppCompatActivity {
                 if (user != null) {
                     // User sedang login
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    setContentView(R.layout.activity_login);
                 } else {
                     // User sedang logout
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -85,7 +83,7 @@ public class Login extends AppCompatActivity {
                 layoutinput.setPadding(50,50,50,50);
 
                 final EditText mail = new EditText(context);
-                mail.setInputType(1);
+                mail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 mail.setHint("Enter your verified Email!");
                 layoutinput.addView(mail);
 
