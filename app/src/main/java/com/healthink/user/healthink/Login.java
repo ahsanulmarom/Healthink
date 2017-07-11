@@ -84,36 +84,21 @@ public class Login extends AppCompatActivity {
                 layoutinput.setOrientation(LinearLayout.VERTICAL);
                 layoutinput.setPadding(50,50,50,50);
 
-                final TextView txtv = new TextView(context);
-                txtv.setText("Email");
-                txtv.setTextColor(Color.BLACK);
-                layoutinput.addView(txtv);
-
                 final EditText mail = new EditText(context);
                 mail.setInputType(1);
-                mail.setHint("Enter Your EMAIL");
+                mail.setHint("Enter your verified Email!");
                 layoutinput.addView(mail);
-
-                final TextView txtv2 = new TextView(context);
-                txtv.setText("Username");
-                txtv.setTextColor(Color.BLACK);
-                layoutinput.addView(txtv2);
-
-                final EditText uname = new EditText(context);
-                uname.setInputType(2);
-                uname.setHint("Enter Your USERNAME");
-                layoutinput.addView(uname);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Reset Password");
-                builder.setMessage("Please enter your active email address and your username below." +
+                builder.setMessage("Please enter your verified and active email address below." +
                         "We will send you an email with instruction for resetting your password.");
                 builder.setView(layoutinput);
                 //negative button
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+
                     }
                 });
                 //posstive button

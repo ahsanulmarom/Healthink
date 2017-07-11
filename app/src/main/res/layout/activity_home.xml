@@ -126,19 +126,16 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar4"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="58dp"
         android:layout_marginBottom="55dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
         android:background="?attr/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="454dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -152,7 +149,9 @@
         app:layout_constraintLeft_toLeftOf="@+id/toolbar4"
         app:layout_constraintRight_toLeftOf="@+id/imageButton3"
         app:srcCompat="@drawable/ic_person_add"
-        app:layout_constraintHorizontal_bias="0.422" />
+        app:layout_constraintHorizontal_bias="0.422"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <ImageButton
         android:id="@+id/imageButton3"
@@ -163,7 +162,8 @@
         android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar4"
         app:layout_constraintRight_toLeftOf="@+id/imageButton4"
-        app:srcCompat="@drawable/ic_group" />
+        app:srcCompat="@drawable/ic_group"
+        android:layout_marginEnd="59dp" />
 
     <ImageButton
         android:id="@+id/imageButton4"
@@ -174,7 +174,8 @@
         android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar4"
         app:layout_constraintRight_toRightOf="@+id/toolbar4"
-        app:srcCompat="@drawable/ic_contact" />
+        app:srcCompat="@drawable/ic_contact"
+        android:layout_marginEnd="49dp" />
 
 
 </android.support.constraint.ConstraintLayout>
