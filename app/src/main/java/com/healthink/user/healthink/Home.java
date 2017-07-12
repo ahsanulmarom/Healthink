@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -25,8 +27,13 @@ public class Home extends AppCompatActivity {
     private static final String TAG = Home.class.getSimpleName();
     BottomNavigationView navigation;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(myToolbar);
+
         fAuth = FirebaseAuth.getInstance();
         fStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -50,6 +57,29 @@ public class Home extends AppCompatActivity {
             }
         };
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     public void navigationMenu() {
