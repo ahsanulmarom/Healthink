@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,8 +27,6 @@ public class Home extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = Home.class.getSimpleName();
     BottomNavigationView navigation;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +70,7 @@ public class Home extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout:
                 // User chose the "Settings" item, show the app settings UI...
+                fAuth.signOut();
                 return true;
 
 
@@ -132,6 +132,13 @@ public class Home extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+        namatampil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Home.this, UserProfile.class));
             }
         });
     }

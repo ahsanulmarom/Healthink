@@ -93,6 +93,7 @@
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:clickable="true"
         app:layout_constraintRight_toLeftOf="@+id/textView10"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
