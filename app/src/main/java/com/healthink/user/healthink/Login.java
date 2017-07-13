@@ -34,6 +34,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
         fAuth = FirebaseAuth.getInstance();
         fStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -42,7 +43,6 @@ public class Login extends AppCompatActivity {
                 if (user != null) {
                     // User sedang login
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    setContentView(R.layout.activity_login);
                 } else {
                     // User sedang logout
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -125,7 +125,7 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, "Sorry, Your Email or Password is Incorrect. Please try again!",
                                     Toast.LENGTH_SHORT).show();
                         } else if (task.isSuccessful()) {
-                           checkIfEmailVerified();
+                            checkIfEmailVerified();
                         }
                     }
                 });

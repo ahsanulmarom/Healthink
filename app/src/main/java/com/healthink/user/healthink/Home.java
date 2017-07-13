@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
+        myToolbar.setLogo(R.drawable.ic_close);
         setSupportActionBar(myToolbar);
 
         fAuth = FirebaseAuth.getInstance();
@@ -88,25 +90,28 @@ public class Home extends AppCompatActivity {
             //memanggil salah satu menu navigation
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
                 switch (item.getItemId()){
                     case R.id.navigation_home :
                         judul.setText("Home");
                         homeMenu();
                         break;
-                    case R.id.navigation_chat :
-                        judul.setText("Chat");
-                        chatMenu();
+                    case R.id.navigation_chat:
+                        fragment = chat.newInstance();
                         break;
-                    case R.id.navigation_timeline :
-                        judul.setText("Timeline");
-                        timelineMenu();
+                    case R.id.navigation_timeline:
+                        fragment = timeline.newInstance();
                         break;
-                    case R.id.navigation_location :
-                        judul.setText("Location");
-                        locationMenu();
+                    case R.id.navigation_location:
+                        fragment = location.newInstance();
                         break;
                 }
-                return true;
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.flContent, fragment)
+                        .commit();
+
+                return false;
             }
         });
     }
