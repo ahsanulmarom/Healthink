@@ -9,8 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/flhome"
         android:layout_width="386dp"
-        android:layout_height="444dp"
-        android:layout_marginTop="69dp"
+        android:layout_height="460dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
