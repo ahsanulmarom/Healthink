@@ -30,10 +30,12 @@ public class Home extends AppCompatActivity {
     BottomNavigationView navigation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
-        myToolbar.setLogo(R.drawable.ic_close);
+//        myToolbar.setLogo(R.drawable.ic_close);
         setSupportActionBar(myToolbar);
+
+
 
         fAuth = FirebaseAuth.getInstance();
         fStateListener = new FirebaseAuth.AuthStateListener() {
@@ -48,7 +50,14 @@ public class Home extends AppCompatActivity {
                     namatampil = (TextView) findViewById(R.id.home_displayName);
                     judul.setText("Home");
 
-                    homeMenu();
+                    if(savedInstanceState == null) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.flContent, homefragment.newInstance()).commit();
+
+                    }
+
+                    //homeMenu();
                     navigationMenu();
                 } else {
                     // User sedang logout
@@ -58,6 +67,8 @@ public class Home extends AppCompatActivity {
             }
         };
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -94,7 +105,8 @@ public class Home extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.navigation_home :
                         judul.setText("Home");
-                        homeMenu();
+                        fragment = homefragment.newInstance();
+                        //homeMenu();
                         break;
                     case R.id.navigation_chat:
                         fragment = chat.newInstance();

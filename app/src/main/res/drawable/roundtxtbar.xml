@@ -8,5 +8,13 @@
         android:topRightRadius="5dp"
         android:bottomLeftRadius="5dp"
         android:bottomRightRadius="5dp"   />
+    <padding
+            android:top="9dp"
+        android:left="9dp"
+        android:right="9dp"
+        android:bottom="9dp"
+        />
+
+
 
 </shape>
