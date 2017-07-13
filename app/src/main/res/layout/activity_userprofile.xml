@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="Profil"
+        android:text="Profile"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -63,16 +63,15 @@
         android:layout_marginStart="16dp" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/user_displayName"
         android:layout_width="162dp"
         android:layout_height="31dp"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="101dp"
         android:background="@color/colorPrimary"
-        android:text="M Faris Adnan"
         android:textAlignment="viewEnd"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/imageView10"
         app:layout_constraintTop_toBottomOf="@+id/toolbarUser"
@@ -90,7 +89,7 @@
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/imageView10"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/user_displayName"
         android:layout_marginStart="14dp" />
 
     <TextView
