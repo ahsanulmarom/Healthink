@@ -51,6 +51,7 @@ public class Home extends AppCompatActivity {
                             getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.flContent, homefragment.newInstance()).commit();
+                            judul.setText("Home");
                         }
                         navigationMenu();
                     } else {
