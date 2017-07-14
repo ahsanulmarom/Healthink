@@ -10,12 +10,15 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/flContent"
         android:layout_width="0dp"
-        android:layout_height="450dp"
+        android:layout_height="444dp"
+        android:layout_marginBottom="54dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+        app:layout_constraintVertical_bias="0.444"></android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"
