@@ -3,8 +3,6 @@ package com.healthink.user.healthink;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -31,18 +29,20 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = SignUp.class.getSimpleName();
     private Context context = this;
+    CheckNetwork cn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        cn = new CheckNetwork(this);
+        if (!cn.isConnected()) {
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+        }
 
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            fAuth = FirebaseAuth.getInstance();
-            fStateListener = new FirebaseAuth.AuthStateListener() {
+        fAuth = FirebaseAuth.getInstance();
+        fStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -108,15 +108,17 @@ public class Login extends AppCompatActivity {
                     //posstive button
                     builder.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            sendEmailResetPassword(mail.getText().toString().trim());
+                            if (!cn.isConnected()) {
+                                Toast.makeText(Login.this, "You are offline. Pease check your connection!",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                sendEmailResetPassword(mail.getText().toString().trim());
+                            }
                         }
                     });
                     builder.show();
                 }
             });
-        } else {
-            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void login(final String email, String password){
@@ -125,14 +127,15 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(Login.this, "Sorry, Your Email or Password is Incorrect. Please try again!",
-                                    Toast.LENGTH_SHORT).show();
+                            if (!cn.isConnected()) {
+                                Toast.makeText(Login.this, "You are offline. Pease check your connection!",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Login.this, "Sorry, Your Email or Password is Incorrect. Please try again!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         } else if (task.isSuccessful()) {
                             checkIfEmailVerified();
                         }

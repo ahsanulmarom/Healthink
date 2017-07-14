@@ -1,9 +1,6 @@
 package com.healthink.user.healthink;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,44 +24,45 @@ public class Home extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = Home.class.getSimpleName();
     BottomNavigationView navigation;
+    CheckNetwork cn;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
-//        myToolbar.setLogo(R.drawable.ic_close);
-        setSupportActionBar(myToolbar);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         judul = (TextView) findViewById(R.id.judul);
 
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            fAuth = FirebaseAuth.getInstance();
-            fStateListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                    if (user != null) {
-                        // User sedang login
-                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                        if (savedInstanceState == null) {
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.flContent, homefragment.newInstance()).commit();
-                            judul.setText("Home");
-                        }
-                        navigationMenu();
-                    } else {
-                        // User sedang logout
-                        Log.d(TAG, "onAuthStateChanged:signed_out");
-                        startActivity(new Intent(Home.this, Into.class));
-                    }
-                }
-            };
-            super.onCreate(savedInstanceState);
-        } else {
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
+//        myToolbar.setLogo(R.drawable.ic_close);
+        setSupportActionBar(myToolbar);
+
+        cn = new CheckNetwork(this);
+        if (!cn.isConnected()) {
             Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
         }
+
+        fAuth = FirebaseAuth.getInstance();
+        fStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User sedang login
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    if (savedInstanceState == null) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.flContent, homefragment.newInstance()).commit();
+                        judul.setText("Home");
+                    }
+                    navigationMenu();
+                } else {
+                    // User sedang logout
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    startActivity(new Intent(Home.this, Into.class));
+                }
+            }
+        };
     }
 
     @Override

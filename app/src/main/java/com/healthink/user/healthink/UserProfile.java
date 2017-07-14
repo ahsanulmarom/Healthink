@@ -1,9 +1,6 @@
 package com.healthink.user.healthink;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -29,14 +26,16 @@ public class UserProfile extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = UserProfile.class.getSimpleName();
+    CheckNetwork cn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
+        cn = new CheckNetwork(this);
+        if (!cn.isConnected()) {
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+        }
             fAuth = FirebaseAuth.getInstance();
             fStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
@@ -77,9 +76,6 @@ public class UserProfile extends AppCompatActivity {
                     }
                 }
             };
-        } else {
-            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

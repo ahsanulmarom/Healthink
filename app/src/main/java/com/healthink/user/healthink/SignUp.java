@@ -1,9 +1,6 @@
 package com.healthink.user.healthink;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -29,15 +26,17 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = SignUp.class.getSimpleName();
+    CheckNetwork cn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
+        cn = new CheckNetwork(this);
+        if (!cn.isConnected()) {
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+        }
             fAuth = FirebaseAuth.getInstance();
             fStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
@@ -84,9 +83,6 @@ public class SignUp extends AppCompatActivity {
 
                 }
             });
-        } else {
-            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void signUp(final String mail, String password) {
@@ -99,8 +95,13 @@ public class SignUp extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignUp.this, "Failed to sign up. Email has been registered.",
-                                    Toast.LENGTH_SHORT).show();
+                            if (!cn.isConnected()) {
+                                Toast.makeText(SignUp.this, "You are offline. Pease check your connection!",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(SignUp.this, "Failed to sign up. Email has been registered.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         } else if (task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
