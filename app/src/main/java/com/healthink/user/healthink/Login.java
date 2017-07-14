@@ -38,7 +38,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         cn = new CheckNetwork(this);
         if (!cn.isConnected()) {
-            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_LONG).show();
         }
 
         fAuth = FirebaseAuth.getInstance();
@@ -110,7 +110,7 @@ public class Login extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             if (!cn.isConnected()) {
                                 Toast.makeText(Login.this, "You are offline. Pease check your connection!",
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             } else {
                                 sendEmailResetPassword(mail.getText().toString().trim());
                             }

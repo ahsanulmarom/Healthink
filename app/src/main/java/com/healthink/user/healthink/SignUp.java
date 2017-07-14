@@ -97,7 +97,7 @@ public class SignUp extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             if (!cn.isConnected()) {
                                 Toast.makeText(SignUp.this, "You are offline. Pease check your connection!",
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(SignUp.this, "Failed to sign up. Email has been registered.",
                                         Toast.LENGTH_SHORT).show();

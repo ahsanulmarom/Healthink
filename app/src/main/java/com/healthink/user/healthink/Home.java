@@ -38,7 +38,7 @@ public class Home extends AppCompatActivity {
 
         cn = new CheckNetwork(this);
         if (!cn.isConnected()) {
-            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_LONG).show();
         }
 
         fAuth = FirebaseAuth.getInstance();
@@ -105,7 +105,7 @@ public class Home extends AppCompatActivity {
                         break;
                     case R.id.navigation_location:
                         judul.setText("Location");
-                        fragment = location.newInstance();
+                        fragment = locationfrag.newInstance();
                         break;
                 }
                 getSupportFragmentManager()
