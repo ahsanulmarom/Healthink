@@ -1,6 +1,9 @@
 package com.healthink.user.healthink;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -31,52 +34,59 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        fAuth = FirebaseAuth.getInstance();
-        fStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User sedang login
-                    if(!(user.isEmailVerified())) {
-                        sendVerificationEmail();
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            fAuth = FirebaseAuth.getInstance();
+            fStateListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // User sedang login
+                        if (!(user.isEmailVerified())) {
+                            sendVerificationEmail();
+                        }
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    } else {
+                        // User sedang logout
+                        Log.d(TAG, "onAuthStateChanged:signed_out");
                     }
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User sedang logout
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-            }
-        };
+            };
 
-        username = (EditText) findViewById(R.id.signup_username);
-        uname = username.getText().toString().trim();
-        email = (EditText) findViewById(R.id.signup_email);
-        mail = email.getText().toString().trim();
-        password = (EditText) findViewById(R.id.signup_password);
-        repassword = (EditText) findViewById(R.id.signup_repassword);
-        submit = (Button) findViewById(R.id.signup_submit);
+            username = (EditText) findViewById(R.id.signup_username);
+            uname = username.getText().toString().trim();
+            email = (EditText) findViewById(R.id.signup_email);
+            mail = email.getText().toString().trim();
+            password = (EditText) findViewById(R.id.signup_password);
+            repassword = (EditText) findViewById(R.id.signup_repassword);
+            submit = (Button) findViewById(R.id.signup_submit);
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(username.getText().toString().equalsIgnoreCase("")) {
-                    username.setError("This Field is Required");
-                } else if (username.getText().toString().length() < 5) {
-                    username.setError("Username must be at least 5 characters");
-                } else if(email.getText().toString().equalsIgnoreCase("")) {
-                    email.setError("This Field is Required");
-                } else if(password.getText().toString().equalsIgnoreCase("")) {
-                    password.setError("This Field is Required");
-                }else if(password.getText().toString().length() < 5) {
-                    password.setError("Password must be at least 5 characters");
-                }else if(!(repassword.getText().toString().equals(password.getText().toString()))) {
-                    repassword.setError("Please check your password!");
-                } else {
-                    signUp(email.getText().toString(), password.getText().toString());
+            submit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (username.getText().toString().equalsIgnoreCase("")) {
+                        username.setError("This Field is Required");
+                    } else if (username.getText().toString().length() < 5) {
+                        username.setError("Username must be at least 5 characters");
+                    } else if (email.getText().toString().equalsIgnoreCase("")) {
+                        email.setError("This Field is Required");
+                    } else if (password.getText().toString().equalsIgnoreCase("")) {
+                        password.setError("This Field is Required");
+                    } else if (password.getText().toString().length() < 5) {
+                        password.setError("Password must be at least 5 characters");
+                    } else if (!(repassword.getText().toString().equals(password.getText().toString()))) {
+                        repassword.setError("Please check your password!");
+                    } else {
+                        signUp(email.getText().toString(), password.getText().toString());
+                    }
+
                 }
-
-            }
-        });
+            });
+        } else {
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void signUp(final String mail, String password) {

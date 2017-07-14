@@ -3,6 +3,8 @@ package com.healthink.user.healthink;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -35,79 +37,86 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        fAuth = FirebaseAuth.getInstance();
-        fStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User sedang login
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User sedang logout
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
 
-        email = (EditText) findViewById(R.id.login_email);
-        password = (EditText) findViewById(R.id.login_password);
-        submit = (Button) findViewById(R.id.login_btnLogin);
-        daftar = (Button) findViewById(R.id.login_btnSignUp);
-        reset = (Button) findViewById(R.id.login_reset);
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(email.getText().toString().equalsIgnoreCase("")) {
-                    email.setError("This Field is Required");
-                } else if(password.getText().toString().equalsIgnoreCase("")) {
-                    password.setError("This Field is Required");
-                } else {
-                    login(email.getText().toString(), password.getText().toString());
-                }
-
-            }
-        });
-
-        daftar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(Login.this, SignUp.class));
-                finish();
-            }
-        });
-
-        reset.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                LinearLayout layoutinput = new LinearLayout(context);   //layout
-                layoutinput.setOrientation(LinearLayout.VERTICAL);
-                layoutinput.setPadding(50,50,50,50);
-
-                final EditText mail = new EditText(context);
-                mail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                mail.setHint("Enter your verified Email!");
-                layoutinput.addView(mail);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Reset Password");
-                builder.setMessage("Please enter your verified and active email address below." +
-                        "We will send you an email with instruction for resetting your password.");
-                builder.setView(layoutinput);
-                //negative button
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            fAuth = FirebaseAuth.getInstance();
+            fStateListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // User sedang login
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    } else {
+                        // User sedang logout
+                        Log.d(TAG, "onAuthStateChanged:signed_out");
                     }
-                });
-                //posstive button
-                builder.setPositiveButton("Reset", new  DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendEmailResetPassword(mail.getText().toString().trim());
+                }
+            };
+
+            email = (EditText) findViewById(R.id.login_email);
+            password = (EditText) findViewById(R.id.login_password);
+            submit = (Button) findViewById(R.id.login_btnLogin);
+            daftar = (Button) findViewById(R.id.login_btnSignUp);
+            reset = (Button) findViewById(R.id.login_reset);
+
+            submit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (email.getText().toString().equalsIgnoreCase("")) {
+                        email.setError("This Field is Required");
+                    } else if (password.getText().toString().equalsIgnoreCase("")) {
+                        password.setError("This Field is Required");
+                    } else {
+                        login(email.getText().toString(), password.getText().toString());
                     }
-                });
-                builder.show();
-            }
-        });
+
+                }
+            });
+
+            daftar.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    startActivity(new Intent(Login.this, SignUp.class));
+                    finish();
+                }
+            });
+
+            reset.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    LinearLayout layoutinput = new LinearLayout(context);   //layout
+                    layoutinput.setOrientation(LinearLayout.VERTICAL);
+                    layoutinput.setPadding(50, 50, 50, 50);
+
+                    final EditText mail = new EditText(context);
+                    mail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    mail.setHint("Enter your verified Email!");
+                    layoutinput.addView(mail);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Reset Password");
+                    builder.setMessage("Please enter your verified and active email address below." +
+                            "We will send you an email with instruction for resetting your password.");
+                    builder.setView(layoutinput);
+                    //negative button
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    //posstive button
+                    builder.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendEmailResetPassword(mail.getText().toString().trim());
+                        }
+                    });
+                    builder.show();
+                }
+            });
+        } else {
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void login(final String email, String password){
