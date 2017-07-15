@@ -35,6 +35,10 @@ public class Home extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
 //        myToolbar.setLogo(R.drawable.ic_close);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        myToolbar.setTitle("");
+        myToolbar.setSubtitle("");
 
         cn = new CheckNetwork(this);
         if (!cn.isConnected()) {
