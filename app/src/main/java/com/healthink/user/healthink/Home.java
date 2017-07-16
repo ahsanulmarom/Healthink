@@ -101,7 +101,7 @@ public class Home extends AppCompatActivity {
                         break;
                     case R.id.navigation_chat:
                         judul.setText("Chat");
-                        fragment = chat.newInstance();
+                        fragment = Chat.newInstance();
                         break;
                     case R.id.navigation_timeline:
                         judul.setText("Timeline");
