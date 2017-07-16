@@ -81,6 +81,7 @@ public class Home extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout:
                 fAuth.signOut();
+                startActivity(new Intent(Home.this, Into.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
