@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class homefragment extends Fragment {
 
+    ImageButton addFriend,addGroup,contacts;
     TextView displayName;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
@@ -42,6 +44,29 @@ public class homefragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_homefragment, container, false);
         displayName = (TextView) view.findViewById(R.id.home_displayName);
+        addFriend = (ImageButton) view.findViewById(R.id.addFr);
+        addGroup = (ImageButton) view.findViewById(R.id.addGr);
+        contacts = (ImageButton) view.findViewById(R.id.contcs);
+
+        //Pindah window
+        addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Add_friend.class));
+            }
+        });
+        addGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Add_group.class));
+            }
+        });
+        contacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Kontak.class));
+            }
+        });
 
         fAuth = FirebaseAuth.getInstance();
         fStateListener = new FirebaseAuth.AuthStateListener() {

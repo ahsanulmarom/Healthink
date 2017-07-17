@@ -75,34 +75,34 @@
         app:layout_constraintRight_toRightOf="@+id/flhome" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/addFr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="49dp"
         android:layout_marginLeft="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
         app:srcCompat="@drawable/ic_person_add"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
+        app:layout_constraintBottom_toBottomOf="@+id/addGr"
         android:layout_marginBottom="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/toolbar7" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/addGr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar7"
-        app:layout_constraintLeft_toRightOf="@+id/imageButton"
-        app:layout_constraintRight_toLeftOf="@+id/imageButton4"
+        app:layout_constraintLeft_toRightOf="@+id/addFr"
+        app:layout_constraintRight_toLeftOf="@+id/contcs"
         app:srcCompat="@drawable/ic_group" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/contcs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="49dp"
@@ -111,7 +111,7 @@
         app:layout_constraintRight_toRightOf="@+id/toolbar7"
         app:srcCompat="@drawable/ic_contact"
         android:layout_marginBottom="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton3" />
+        app:layout_constraintBottom_toBottomOf="@+id/addGr" />
 
 
 </android.support.constraint.ConstraintLayout>
