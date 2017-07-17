@@ -5,14 +5,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 
 /**
  * Created by user on 14/07/2017.
@@ -27,10 +28,10 @@ public class GPSTracker extends Service implements LocationListener {
     Location location;
     double latitude, longitude;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private static final long MIN_TIME_BW_UPDATES = 10;
+    private static final long MIN_TIME_BW_UPDATES = 2000;
     protected LocationManager locationManager;
 
-    public GPSTracker (Context context) {
+    public GPSTracker(Context context) {
         this.context = context;
         getLocation();
     }
@@ -41,11 +42,11 @@ public class GPSTracker extends Service implements LocationListener {
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if(!isGPSEnabled && !isNetworkEnabled) {
+            if (!isGPSEnabled && !isNetworkEnabled) {
 
             } else {
                 this.canGetLocation = true;
-                if(isNetworkEnabled) {
+                if (isNetworkEnabled) {
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
@@ -60,9 +61,9 @@ public class GPSTracker extends Service implements LocationListener {
                     }
                 }
                 if (isGPSEnabled) {
-                    if(location == null) {
+                    if (location == null) {
                         locationManager.requestLocationUpdates(
-                                LocationManager .GPS_PROVIDER,
+                                LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         if (locationManager != null) {
