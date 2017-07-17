@@ -76,20 +76,32 @@ public class Add_friend extends AppCompatActivity {
         user.orderByChild("username").equalTo(username).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                for(final DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     String key = singleSnapshot.getKey();
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference detilUser = database.getReference("userData");
                     detilUser.child(key).addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String nama = dataSnapshot.child("displayName").getValue(String.class);
+                        public void onDataChange(final DataSnapshot dataSnapshot) {
+                            final String nama = dataSnapshot.child("displayName").getValue(String.class);
                             String bio = dataSnapshot.child("bio").getValue(String.class);
 
                             name.setText(nama);
                             bioUser.setText(bio);
                             pictUser.setImageDrawable(getDrawable(R.drawable.logo));
                             addFr.setImageDrawable(getDrawable(R.drawable.ic_add_circle));
+
+                            addFr.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String key = singleSnapshot.getKey();
+                                    FirebaseUser user = fAuth.getCurrentUser();
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference friendList = database.getReference("friendList").child(user.getUid());
+                                    friendList.push().setValue(key);
+                                    Toast.makeText(Add_friend.this, nama + " is your friend, now", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                         @Override
