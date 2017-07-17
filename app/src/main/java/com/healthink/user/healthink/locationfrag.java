@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -21,6 +19,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,7 +39,10 @@ public class locationfrag extends Fragment {
     private GoogleMap googleMap;
     GPSTracker gps;
     double latitude, longitude;
-    private RequestQueue requestQueue;
+    Geocoder geocoder;
+    private FirebaseAuth fAuth;
+    private FirebaseAuth.AuthStateListener fStateListener;
+    private static final String TAG = Home.class.getSimpleName();
 
     public static locationfrag newInstance() {
         // Required empty public constructor
@@ -52,7 +59,7 @@ public class locationfrag extends Fragment {
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume(); // needed to get the map to display immediately
         gps = new GPSTracker(getActivity());
-        requestQueue = Volley.newRequestQueue(getActivity());
+        geocoder = new Geocoder(getActivity());
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -65,35 +72,78 @@ public class locationfrag extends Fragment {
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
                 //Market lokasi lain pengguna
-                try {
-                    Geocoder geocoder = new Geocoder(getActivity());
-                    List<Address> list = geocoder.getFromLocationName("Jalan Kolonel Sugiyono, Pati", 1);
-                    if(list.size() > 0 && list != null) {
-                            Address add = list.get(0);
-                            googleMap.addMarker(new MarkerOptions().position(
-                                    new LatLng(add.getLatitude(), add.getLongitude()))
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                                    .title("Test").snippet("Nyoba"));
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference roleUser = database.getReference("userData");
+                    roleUser.orderByChild("role").equalTo(1).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                                String key = singleSnapshot.getKey();
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference alamat = database.getReference("userData");
+                                alamat.child(key).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                            String name = dataSnapshot.child("displayName").getValue(String.class);
+                                            String pos = dataSnapshot.child("address").getValue(String.class);
+                                            try {
+                                                googleMap.addMarker(new MarkerOptions().position(
+                                                        new LatLng(getLat(pos), getLng(pos)))
+                                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                                        .title(name).snippet(pos));
+                                            } catch (IOException e1) {
+                                                e1.printStackTrace();
+                                            }
+                                    }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
                         }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 //Marker lokasi user
                 if (gps.canGetLocation) {
-                    LatLng myLoc = new LatLng(gps.getLatitude(), gps.getLongitude());
-                    googleMap.addMarker(new MarkerOptions().position(myLoc).title("Your Location").snippet("You are here."));
-
-                    // For zooming automatically to the location of the marker
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(myLoc).zoom(15).build();
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    try {
+                        LatLng myLoc = new LatLng(gps.getLatitude(), gps.getLongitude());
+                        googleMap.addMarker(new MarkerOptions().position(myLoc)
+                                .title("Your Location").snippet(getAddress(gps.getLatitude(), gps.getLongitude())));
+                        // For zooming automatically to the location of the marker
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(myLoc).zoom(15).build();
+                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
         return view;
     }
 
-    public void getLatLng(String nama, String address) throws IOException {
+    public String getAddress(double lat, double lng) throws IOException {
+        List<Address> list = geocoder.getFromLocation(lat,lng,1);
+        Address addresses = list.get(0);
+        String wil = addresses.getSubLocality();
+        String kec = addresses.getLocality();
+        String kab = addresses.getSubAdminArea();
+        return wil + ", " + kec + ", " + kab;
+    }
 
+    public double getLat(String add) throws IOException {
+        List<Address> list = geocoder.getFromLocationName(add,1);
+        Address addresses = list.get(0);
+        return addresses.getLatitude();
+    }
+
+    public double getLng(String add) throws IOException {
+        List<Address> list = geocoder.getFromLocationName(add,1);
+        Address addresses = list.get(0);
+        return addresses.getLongitude();
     }
 
     @Override
