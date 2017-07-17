@@ -50,15 +50,16 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="74dp"
+        android:layout_height="39dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/roundbtntrans"
         android:text="Edit"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
-        app:layout_constraintRight_toRightOf="@+id/toolbar6" />
+        app:layout_constraintRight_toRightOf="@+id/toolbar6"
+        android:layout_marginBottom="1dp" />
 
 
     <android.support.v7.widget.Toolbar
@@ -77,29 +78,28 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginLeft="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintLeft_toLeftOf="@+id/toolbar7"
         app:srcCompat="@drawable/ic_person_add"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/toolbar7" />
 
     <ImageButton
         android:id="@+id/imageButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:layout_marginEnd="59dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar7"
         app:layout_constraintLeft_toRightOf="@+id/imageButton"
         app:layout_constraintRight_toLeftOf="@+id/imageButton4"
-        app:srcCompat="@drawable/ic_group"
-        app:layout_constraintHorizontal_bias="0.507" />
+        app:srcCompat="@drawable/ic_group" />
 
     <ImageButton
         android:id="@+id/imageButton4"
