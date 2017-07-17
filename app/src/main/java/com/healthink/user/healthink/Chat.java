@@ -45,67 +45,14 @@ public class Chat extends Fragment {
         return new Chat();
     }
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Firebase.setAndroidContext(this);
 
-        mSendButton.findViewById(R.id.sendButton);
-        mMessageEdit.findViewById(R.id.messageEdit);
-
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                showFirebaseLoginPrompt();
-            }
-        });
-
-        mRef = new Firebase("https://healthink-a975c.firebaseio.com/chat");
-        mChatRef = mRef.limitToLast(50);
-
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChatModel chat = new ChatModel(mMessageEdit.getText().toString(), mName, userId, System.currentTimeMillis(), mTime);
-                mRef.push().setValue(chat, new Firebase.CompletionListener() {
-                    @Override
-                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        if (firebaseError != null) {
-                            Log.e(TAG, firebaseError.toString());
-                        }
-                    }
-                });
-                mMessageEdit.setText("");
-            }
-        });
-
-        mMessages.findViewById(R.id.messagesList);
-
-        LinearLayoutManager manager = new LinearLayoutManager(null);
-        manager.setReverseLayout(false);
-
-        mMessages.setHasFixedSize(false);
-        mMessages.setLayoutManager(manager);
-
-        mRecycleViewAdapter = new FirebaseRecyclerAdapter<ChatModel, ChatHolder>(ChatModel.class, R.layout.text_message, ChatHolder.class, mChatRef) {
-            @Override
-            public void populateViewHolder(ChatHolder chatView, ChatModel chat, int position) {
-                chatView.setText(chat.getMessage());
-                chatView.setName(chat.getName());
-                chatView.setTime(chat.getFormattedTime());
 
 
-                if (chat.getUserId() == 2) {
-                    chatView.setIsSender(true);
-                } else {
-                    chatView.setIsSender(false);
-                }
-            }
-        };
-
-        mMessages.setAdapter(mRecycleViewAdapter);
-
-    }
+    }*/
 
     public static class ChatHolder extends RecyclerView.ViewHolder {
         View mView;
@@ -156,6 +103,60 @@ public class Chat extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        mSendButton = (Button) view.findViewById(R.id.sendButton);
+        mMessageEdit = (EditText) view.findViewById(R.id.messageEdit);
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                showFirebaseLoginPrompt();
+            }
+        });
+
+        mRef = new Firebase("https://healthink-a975c.firebaseio.com/chat");
+        mChatRef = mRef.limitToLast(50);
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChatModel chat = new ChatModel(mMessageEdit.getText().toString(), mName, userId, System.currentTimeMillis(), mTime);
+                mRef.push().setValue(chat, new Firebase.CompletionListener() {
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                        if (firebaseError != null) {
+                            Log.e(TAG, firebaseError.toString());
+                        }
+                    }
+                });
+                mMessageEdit.setText("");
+            }
+        });
+
+        mMessages = (RecyclerView) view.findViewById(R.id.messagesList);
+
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(false);
+
+        mMessages.setHasFixedSize(false);
+        mMessages.setLayoutManager(manager);
+
+        mRecycleViewAdapter = new FirebaseRecyclerAdapter<ChatModel, ChatHolder>(ChatModel.class, R.layout.text_message, ChatHolder.class, mChatRef) {
+            @Override
+            public void populateViewHolder(ChatHolder chatView, ChatModel chat, int position) {
+                chatView.setText(chat.getMessage());
+                chatView.setName(chat.getName());
+                chatView.setTime(chat.getFormattedTime());
+
+
+                if (chat.getUserId() == 2) {
+                    chatView.setIsSender(true);
+                } else {
+                    chatView.setIsSender(false);
+                }
+            }
+        };
+
+        mMessages.setAdapter(mRecycleViewAdapter);
         return view;
 
 
