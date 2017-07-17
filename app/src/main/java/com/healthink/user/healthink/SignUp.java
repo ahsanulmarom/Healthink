@@ -108,7 +108,9 @@ public class SignUp extends AppCompatActivity {
                             DatabaseReference userData = database.getReference("userData").child(user.getUid());
                             userData.child("email").setValue(email.getText().toString().trim());
                             userData.child("username").setValue(username.getText().toString().trim());
-                            userData.child("displayName").setValue(null);
+                            userData.child("displayName").setValue(0);
+                            userData.child("role").setValue(0);
+                            userData.child("bio").setValue("Hello! I'm a new member here.");
                             Toast.makeText(SignUp.this, "Sign up Successfully. Please check email to verify account! ",
                                     Toast.LENGTH_SHORT).show();
                         }

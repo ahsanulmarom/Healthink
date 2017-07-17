@@ -9,12 +9,11 @@
     <ImageView
         android:layout_width="73dp"
         android:layout_height="67dp"
-        app:srcCompat="@mipmap/ic_userdp"
         android:layout_marginTop="21dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/imageView11" />
+        android:id="@+id/addFr_userPict" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -32,7 +31,7 @@
         tools:layout_constraintRight_creator="1" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/addFr_search"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -48,13 +47,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/addFr_btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="41dp"
         android:backgroundTint="@color/colorPrimary"
-        app:layout_constraintLeft_toRightOf="@+id/editText"
+        app:layout_constraintLeft_toRightOf="@+id/addFr_search"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_search" />
 
@@ -76,32 +75,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/addFr_displayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nama User"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@+id/imageView11"
+        app:layout_constraintTop_toTopOf="@+id/addFr_userPict"
         android:layout_marginTop="0dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView11"
+        app:layout_constraintLeft_toRightOf="@+id/addFr_userPict"
         android:layout_marginLeft="16dp" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/addFr_bio"
         android:layout_width="118dp"
         android:layout_height="50dp"
-        android:text="Bio data user hdaoidadibaciacnaucbaicbakcabciabc"
         android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/addFr_displayName"
         android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/textView9" />
+        app:layout_constraintLeft_toLeftOf="@+id/addFr_displayName" />
 
     <ImageButton
-        android:id="@+id/imageButton7"
+        android:id="@+id/addFr_btnAddFr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_add_circle"
-        app:layout_constraintLeft_toRightOf="@+id/imageView11"
+        app:layout_constraintLeft_toRightOf="@+id/addFr_userPict"
         android:layout_marginLeft="221dp"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2" />

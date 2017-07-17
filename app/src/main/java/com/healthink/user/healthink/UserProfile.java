@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class UserProfile extends AppCompatActivity {
 
-    TextView namatampil;
+    TextView namatampil, bio;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = UserProfile.class.getSimpleName();
@@ -46,6 +46,7 @@ public class UserProfile extends AppCompatActivity {
                         Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                         setContentView(R.layout.activity_userprofile);
                         namatampil = (TextView) findViewById(R.id.user_displayName);
+                        bio = (TextView) findViewById(R.id.user_bio);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference userData = database.getReference("userData");
@@ -59,8 +60,9 @@ public class UserProfile extends AppCompatActivity {
                                 } else {
                                     userdata.setDisplayName(dataSnapshot.child("displayName").getValue(String.class));
                                 }
-                                Log.e(TAG, "onDataChange: " + userdata.getDisplayName());
+                                userdata.setBioUser(dataSnapshot.child("bio").getValue(String.class));
                                 namatampil.setText(userdata.getDisplayName());
+                                bio.setText(userdata.getBioUser());
                             }
 
                             @Override

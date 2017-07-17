@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 public class homefragment extends Fragment {
 
     ImageButton addFriend,addGroup,contacts;
-    TextView displayName;
+    TextView displayName, bio;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = Home.class.getSimpleName();
@@ -47,6 +47,7 @@ public class homefragment extends Fragment {
         addFriend = (ImageButton) view.findViewById(R.id.addFr);
         addGroup = (ImageButton) view.findViewById(R.id.addGr);
         contacts = (ImageButton) view.findViewById(R.id.contcs);
+        bio = (TextView) view.findViewById(R.id.home_bio);
 
         //Pindah window
         addFriend.setOnClickListener(new View.OnClickListener() {
@@ -101,8 +102,9 @@ public class homefragment extends Fragment {
                 } else {
                     userdata.setDisplayName(dataSnapshot.child("displayName").getValue(String.class));
                 }
-                Log.e(TAG, "onDataChange: " + userdata.getDisplayName() );
+                userdata.setBioUser(dataSnapshot.child("bio").getValue(String.class));
                 displayName.setText(userdata.getDisplayName());
+                bio.setText(userdata.getBioUser());
             }
             @Override
             public void onCancelled(DatabaseError error) {
