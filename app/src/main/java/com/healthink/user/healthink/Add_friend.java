@@ -76,40 +76,61 @@ public class Add_friend extends AppCompatActivity {
         user.orderByChild("username").equalTo(username).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(final DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    String key = singleSnapshot.getKey();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference detilUser = database.getReference("userData");
-                    detilUser.child(key).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(final DataSnapshot dataSnapshot) {
-                            final String nama = dataSnapshot.child("displayName").getValue(String.class);
-                            String bio = dataSnapshot.child("bio").getValue(String.class);
-
-                            name.setText(nama);
-                            bioUser.setText(bio);
-                            pictUser.setImageDrawable(getDrawable(R.drawable.logo));
-                            addFr.setImageDrawable(getDrawable(R.drawable.ic_add_circle));
-
-                            addFr.setOnClickListener(new View.OnClickListener() {
+                if (dataSnapshot.getValue() == null) {
+                    Toast.makeText(Add_friend.this, "Username cant be found", Toast.LENGTH_SHORT).show();
+                    name.setText(null);
+                    bioUser.setText(null);
+                    pictUser.setImageDrawable(null);
+                    addFr.setImageDrawable(null);
+                } else {
+                    for (final DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {  //menemukan username teman
+                            String key = singleSnapshot.getKey();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference detilUser = database.getReference("userData");
+                            detilUser.child(key).addValueEventListener(new ValueEventListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    String key = singleSnapshot.getKey();
-                                    FirebaseUser user = fAuth.getCurrentUser();
+                                public void onDataChange(final DataSnapshot dataSnapshot) {
+                                    final String nama = dataSnapshot.child("displayName").getValue(String.class);
+                                    String bio = dataSnapshot.child("bio").getValue(String.class);
+
+                                    name.setText(nama);
+                                    bioUser.setText(bio);
+                                    pictUser.setImageDrawable(getDrawable(R.drawable.logo));
+
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                    DatabaseReference friendList = database.getReference("friendList").child(user.getUid());
-                                    friendList.push().setValue(key);
-                                    Toast.makeText(Add_friend.this, nama + " is your friend, now", Toast.LENGTH_SHORT).show();
+                                    final String key = singleSnapshot.getKey();
+                                    final FirebaseUser user = fAuth.getCurrentUser();
+                                    final DatabaseReference friendList = database.getReference("friendList");
+                                    friendList.child(user.getUid()).orderByChild("id")
+                                            .equalTo(key).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            Log.e(TAG, "onDataChange: getref " + dataSnapshot.getValue() );
+                                            if(dataSnapshot.getValue() == null) {
+                                                addFr.setImageDrawable(getDrawable(R.drawable.ic_add_circle));
+                                                addFr.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        friendList.child(user.getUid()).push().child("id").setValue(key);
+                                                        Toast.makeText(Add_friend.this, nama + " is your friend, now",
+                                                                Toast.LENGTH_SHORT).show();
+                                                        startActivity(new Intent(Add_friend.this, Kontak.class));
+                                                    }
+                                                });
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                        }
+                                    });
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
                                 }
                             });
                         }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
+                    }
             }
 
             @Override
