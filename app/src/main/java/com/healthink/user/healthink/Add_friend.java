@@ -1,11 +1,13 @@
 package com.healthink.user.healthink;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +30,7 @@ public class Add_friend extends AppCompatActivity {
     private ImageView pictUser;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
-    private static final String TAG = SignUp.class.getSimpleName();
+    private static final String TAG = Add_friend.class.getSimpleName();
     CheckNetwork cn;
 
     @Override
@@ -45,7 +47,7 @@ public class Add_friend extends AppCompatActivity {
 
         cn = new CheckNetwork(this);
         if (!cn.isConnected()) {
-            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You are not connected internet. Pease check your connection!", Toast.LENGTH_LONG).show();
         }
         fAuth = FirebaseAuth.getInstance();
         fStateListener = new FirebaseAuth.AuthStateListener() {
@@ -57,10 +59,10 @@ public class Add_friend extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     btnsearch.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
+                            hideSoftKeyboard(Add_friend.this);
                             getListUser(search.getText().toString().trim());
                         }
                     });
-                    getListUser(search.getText().toString().trim());
                 } else {
                     // User sedang logout
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -70,14 +72,14 @@ public class Add_friend extends AppCompatActivity {
         };
     }
 
-    public void getListUser(String username) {
+    public void getListUser(final String username) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference user = database.getReference("userData");
         user.orderByChild("username").equalTo(username).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
-                    Toast.makeText(Add_friend.this, "Username cant be found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Add_friend.this, "Username can't be found", Toast.LENGTH_SHORT).show();
                     name.setText(null);
                     bioUser.setText(null);
                     pictUser.setImageDrawable(null);
@@ -92,8 +94,12 @@ public class Add_friend extends AppCompatActivity {
                                 public void onDataChange(final DataSnapshot dataSnapshot) {
                                     final String nama = dataSnapshot.child("displayName").getValue(String.class);
                                     String bio = dataSnapshot.child("bio").getValue(String.class);
-
-                                    name.setText(nama);
+                                    if (dataSnapshot.child("role").getValue(int.class).equals(1)) {
+                                        if (this != null) {
+                                            name.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.logo20),null);    //buat nandain di role 1
+                                        }
+                                    }
+                                    name.setText(nama + "   ");
                                     bioUser.setText(bio);
                                     pictUser.setImageDrawable(getDrawable(R.drawable.logo));
 
@@ -112,6 +118,7 @@ public class Add_friend extends AppCompatActivity {
                                                     @Override
                                                     public void onClick(View v) {
                                                         friendList.child(user.getUid()).push().child("id").setValue(key);
+                                                        friendList.child(user.getUid()).push().child("username").setValue(username);
                                                         Toast.makeText(Add_friend.this, nama + " is your friend, now",
                                                                 Toast.LENGTH_SHORT).show();
                                                         startActivity(new Intent(Add_friend.this, Kontak.class));
@@ -138,6 +145,14 @@ public class Add_friend extends AppCompatActivity {
 
             }
         });
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override

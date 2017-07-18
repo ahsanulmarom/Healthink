@@ -102,8 +102,13 @@ public class homefragment extends Fragment {
                 } else {
                     userdata.setDisplayName(dataSnapshot.child("displayName").getValue(String.class));
                 }
+                if (dataSnapshot.child("role").getValue(int.class).equals(1)) {
+                    if (getActivity() != null) {
+                        displayName.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.logo20),null);    //buat nandain di role 1
+                    }
+                }
                 userdata.setBioUser(dataSnapshot.child("bio").getValue(String.class));
-                displayName.setText(userdata.getDisplayName());
+                displayName.setText(userdata.getDisplayName() + "   ");
                 bio.setText(userdata.getBioUser());
             }
             @Override

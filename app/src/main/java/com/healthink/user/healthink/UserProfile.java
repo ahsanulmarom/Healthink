@@ -60,8 +60,13 @@ public class UserProfile extends AppCompatActivity {
                                 } else {
                                     userdata.setDisplayName(dataSnapshot.child("displayName").getValue(String.class));
                                 }
+                                if (dataSnapshot.child("role").getValue(int.class).equals(1)) {
+                                    if (this != null) {
+                                        namatampil.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.logo20),null);    //buat nandain di role 1
+                                    }
+                                }
                                 userdata.setBioUser(dataSnapshot.child("bio").getValue(String.class));
-                                namatampil.setText(userdata.getDisplayName());
+                                namatampil.setText(userdata.getDisplayName() + "   ");
                                 bio.setText(userdata.getBioUser());
                             }
 
