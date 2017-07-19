@@ -97,7 +97,8 @@ public class homefragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserData userdata = new UserData();
                 if(dataSnapshot.child("displayName").getValue(String.class) == null ||
-                        dataSnapshot.child("displayName").getValue(String.class) == "") {
+                        dataSnapshot.child("displayName").getValue(String.class) == "" ||
+                        dataSnapshot.child("displayName").getValue(String.class) == "0") {
                     userdata.setDisplayName(dataSnapshot.child("username").getValue(String.class));
                 } else {
                     userdata.setDisplayName(dataSnapshot.child("displayName").getValue(String.class));

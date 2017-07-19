@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Add_friend extends AppCompatActivity {
 
     private EditText search;
@@ -111,14 +114,27 @@ public class Add_friend extends AppCompatActivity {
                                             .equalTo(key).addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            Log.e(TAG, "onDataChange: getref " + dataSnapshot.getValue() );
                                             if(dataSnapshot.getValue() == null) {
                                                 addFr.setImageDrawable(getDrawable(R.drawable.ic_add_circle));
                                                 addFr.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        friendList.child(user.getUid()).push().child("id").setValue(key);
-                                                        friendList.child(user.getUid()).push().child("username").setValue(username);
+                                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                        DatabaseReference unameUser = database.getReference("userData").child(user.getUid());
+                                                        unameUser.addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                Map me = new HashMap();
+                                                                me.put("username", username);
+                                                                me.put("id", key);
+                                                                friendList.child(user.getUid()).push().setValue(me);
+                                                                Map u = new HashMap();
+                                                                u.put("username", dataSnapshot.child("username").getValue(String.class));
+                                                                u.put("id", user.getUid());
+                                                                friendList.child(key).push().setValue(u);
+                                                            }
+                                                            @Override public void onCancelled(DatabaseError databaseError) {}
+                                                        });
                                                         Toast.makeText(Add_friend.this, nama + " is your friend, now",
                                                                 Toast.LENGTH_SHORT).show();
                                                         startActivity(new Intent(Add_friend.this, Kontak.class));
@@ -126,24 +142,15 @@ public class Add_friend extends AppCompatActivity {
                                                 });
                                             }
                                         }
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-                                        }
+                                        @Override public void onCancelled(DatabaseError databaseError) {}
                                     });
                                 }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
+                                @Override public void onCancelled(DatabaseError databaseError) {}
                             });
                         }
                     }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
         });
     }
 

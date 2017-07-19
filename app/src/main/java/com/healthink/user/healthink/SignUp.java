@@ -18,6 +18,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignUp extends AppCompatActivity {
 
     private EditText username, email, password, repassword;
@@ -106,11 +109,14 @@ public class SignUp extends AppCompatActivity {
                             FirebaseUser user = fAuth.getCurrentUser();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference userData = database.getReference("userData").child(user.getUid());
-                            userData.child("email").setValue(email.getText().toString().trim());
-                            userData.child("username").setValue(username.getText().toString().trim());
-                            userData.child("displayName").setValue(0);
-                            userData.child("role").setValue(0);
-                            userData.child("bio").setValue("Hello! I'm a new member here.");
+                            Map data = new HashMap();
+                            data.put("email", email.getText().toString().trim());
+                            data.put("username", username.getText().toString().trim());
+                            data.put("displayName", 0);
+                            data.put("role", 0);
+                            data.put("bio", "Hello! I'm a new member here.");
+                            data.put("address", 0);
+                            userData.setValue(data);
                             Toast.makeText(SignUp.this, "Sign up Successfully. Please check email to verify account! ",
                                     Toast.LENGTH_SHORT).show();
                         }

@@ -7,6 +7,7 @@ package com.healthink.user.healthink;
 public class UserData {
     private String displayName;
     private String bioUser;
+    private String username;
 
     public UserData() {
 
@@ -28,5 +29,13 @@ public class UserData {
 
     public void setBioUser(String bioUser) {
         this.bioUser = bioUser;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
