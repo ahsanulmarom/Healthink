@@ -14,12 +14,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,8 +37,6 @@ public class Kontak extends AppCompatActivity {
 
     EditText cari;
     ImageButton btncari;
-    ImageView pictUser;
-    TextView displayName, bioUser;
     ListView lv;
     Adapter adapter, adapter2;
     private FirebaseAuth fAuth;
@@ -48,8 +44,8 @@ public class Kontak extends AppCompatActivity {
     private static final String TAG = Kontak.class.getSimpleName();
     private Context context = this;
     CheckNetwork cn;
-    List<HashMap<String, String>> fillMaps = new ArrayList<>();
-    List<HashMap<String, String>> fillMaps2 = new ArrayList<>();
+    List<HashMap<String, Object>> fillMaps = new ArrayList<>();
+    List<HashMap<String, Object>> fillMaps2 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,12 +106,20 @@ public class Kontak extends AppCompatActivity {
                         data.child(id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Map map = new HashMap();
-                                    map.put("id", user.getUid());
-                                    map.put("name", dataSnapshot.child("displayName").getValue(String.class));
-                                    map.put("bio", dataSnapshot.child("bio").getValue(String.class));
-                                    fillMaps.add((HashMap) map);
-                                adapter = new SimpleAdapter(getBaseContext(), fillMaps, R.layout.activity_kontak, new String[]{"name", "bio"}, new int[]{R.id.kontak_displayName, R.id.kontak_bio});
+                                Map map = new HashMap();
+                                map.put("id", user.getUid());
+                                map.put("name", dataSnapshot.child("displayName").getValue(String.class));
+                                map.put("bio", dataSnapshot.child("bio").getValue(String.class));
+                                map.put("pict", R.drawable.logo);
+                                if (dataSnapshot.child("role").getValue(int.class).equals(1)) {
+                                    map.put("badge", R.drawable.logo);
+                                } else {
+                                    map.put("badge", null);
+                                }
+                                fillMaps.add((HashMap) map);
+                                adapter = new SimpleAdapter(getBaseContext(), fillMaps, R.layout.activity_kontak,
+                                        new String[]{"name", "bio", "pict", "badge"},
+                                        new int[]{R.id.kontak_displayName, R.id.kontak_bio, R.id.kontak_pictUser, R.id.kontak_badge});
                                 lv.setAdapter((ListAdapter) adapter);
                             }
                             @Override
@@ -130,6 +134,7 @@ public class Kontak extends AppCompatActivity {
     }
 
     public void getFriend(String username) {
+        fillMaps2.clear();
             final FirebaseUser user = fAuth.getCurrentUser();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference friend = database.getReference("friendList");
@@ -148,13 +153,20 @@ public class Kontak extends AppCompatActivity {
                             data.child(id).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    fillMaps2.clear();
                                     Map map = new HashMap();
                                     map.put("id", user.getUid());
                                     map.put("name", dataSnapshot.child("displayName").getValue(String.class));
                                     map.put("bio", dataSnapshot.child("bio").getValue(String.class));
+                                    map.put("pict", R.drawable.logo);
+                                    if (dataSnapshot.child("role").getValue(int.class).equals(1)) {
+                                        map.put("badge", R.drawable.logo);
+                                    } else {
+                                        map.put("badge", null);
+                                    }
                                     fillMaps2.add((HashMap) map);
-                                    adapter2 = new SimpleAdapter(getBaseContext(), fillMaps2, R.layout.activity_kontak, new String[]{"name", "bio"}, new int[]{R.id.kontak_displayName, R.id.kontak_bio});
+                                    adapter2 = new SimpleAdapter(getBaseContext(), fillMaps2, R.layout.activity_kontak,
+                                            new String[]{"name", "bio", "pict", "badge"},
+                                            new int[]{R.id.kontak_displayName, R.id.kontak_bio, R.id.kontak_pictUser, R.id.kontak_badge});
                                     lv.setAdapter((ListAdapter) adapter2);
                                 }
                                 @Override
