@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class Kontak extends AppCompatActivity {
     ImageButton btncari;
     ImageView pictUser;
     TextView displayName, bioUser;
+    ListView listView;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = Kontak.class.getSimpleName();
@@ -79,7 +81,7 @@ public class Kontak extends AppCompatActivity {
     }
 
     public void getFriend() {
-        FirebaseUser user = fAuth.getCurrentUser();
+        final FirebaseUser user = fAuth.getCurrentUser();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference friend = database.getReference("friendList");
         friend.child(user.getUid()).orderByChild("username").addValueEventListener(new ValueEventListener() {
@@ -98,9 +100,9 @@ public class Kontak extends AppCompatActivity {
                         data.child(id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                    pictUser.setImageDrawable(getDrawable(R.drawable.logo));
-                                    displayName.setText(dataSnapshot.child("displayName").getValue(String.class));
-                                    bioUser.setText(dataSnapshot.child("bio").getValue(String.class));
+                                pictUser.setImageDrawable(getDrawable(R.drawable.logo));
+                                displayName.setText(dataSnapshot.child("displayName").getValue(String.class));
+                                bioUser.setText(dataSnapshot.child("bio").getValue(String.class));
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {}

@@ -8,6 +8,7 @@ public class UserData {
     private String displayName;
     private String bioUser;
     private String username;
+    private int pict;
 
     public UserData() {
 
@@ -37,5 +38,13 @@ public class UserData {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getPict() {
+        return pict;
+    }
+
+    public void setPict(int pict) {
+        this.pict = pict;
     }
 }
