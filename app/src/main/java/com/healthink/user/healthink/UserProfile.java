@@ -1,13 +1,18 @@
 package com.healthink.user.healthink;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * Created by user on 12/07/2017.
@@ -23,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 public class UserProfile extends AppCompatActivity {
 
     TextView namatampil, bio;
+    ImageView pict;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
     private static final String TAG = UserProfile.class.getSimpleName();
@@ -40,19 +48,33 @@ public class UserProfile extends AppCompatActivity {
             fStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    final FirebaseUser user = firebaseAuth.getCurrentUser();
                     if (user != null) {
                         // User sedang login
                         Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                         setContentView(R.layout.activity_userprofile);
                         namatampil = (TextView) findViewById(R.id.user_displayName);
                         bio = (TextView) findViewById(R.id.user_bio);
+                        pict = (ImageView) findViewById(R.id.user_pict);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference userData = database.getReference("userData");
                         userData.child(user.getUid()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                FirebaseStorage mStorageRef = FirebaseStorage.getInstance();
+                                StorageReference storageReference = mStorageRef.getReference("photoProfile");
+                                storageReference.child(user.getUid() + ".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Glide.with(UserProfile.this).load(uri).into(pict);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        pict.setImageDrawable(getResources().getDrawable(R.drawable.ic_dp_web));
+                                    }
+                                });
                                 UserData userdata = new UserData();
                                 if (dataSnapshot.child("displayName").getValue(String.class) == null ||
                                         dataSnapshot.child("displayName").getValue(String.class) == "" ||

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +21,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,17 +106,32 @@ public class Kontak extends AppCompatActivity {
                 } else {
                     for (final DataSnapshot snap : dataSnapshot.getChildren()) {
                         Log.e(TAG, "onDataChange: testid " +  snap.child("id").getValue(String.class));
-                        String id = snap.child("id").getValue(String.class);
+                        final String id = snap.child("id").getValue(String.class);
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference data = database.getReference("userData");
                         data.child(id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Map map = new HashMap();
+                                final Map map = new HashMap();
                                 map.put("id", user.getUid());
                                 map.put("name", dataSnapshot.child("displayName").getValue(String.class));
                                 map.put("bio", dataSnapshot.child("bio").getValue(String.class));
-                                map.put("pict", R.drawable.logo);
+
+                                FirebaseStorage mStorageRef = FirebaseStorage.getInstance();
+                                StorageReference storageReference = mStorageRef.getReference("photoProfile");
+                                Log.e(TAG, "onDataChange: wkwkwkwkwkwk");
+                                storageReference.child(id + ".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        map.put("pict", uri);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        map.put("pict", R.drawable.ic_dp_web);
+                                    }
+                                });
+
                                 if (dataSnapshot.child("role").getValue(int.class).equals(1)) {
                                     map.put("badge", R.drawable.logo);
                                 } else {
@@ -141,23 +162,33 @@ public class Kontak extends AppCompatActivity {
             friend.child(user.getUid()).orderByChild("username").equalTo(username).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.e(TAG, "onDataChange: testref " + dataSnapshot.getRef());
-                    Log.e(TAG, "onDataChange: testval " + dataSnapshot.getValue());
                     if (dataSnapshot.getValue() == null) {
                         getFriend();
                     } else {
                         for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                            String id = snap.child("id").getValue(String.class);
+                            final String id = snap.child("id").getValue(String.class);
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference data = database.getReference("userData");
                             data.child(id).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Map map = new HashMap();
+                                    final Map map = new HashMap();
                                     map.put("id", user.getUid());
                                     map.put("name", dataSnapshot.child("displayName").getValue(String.class));
                                     map.put("bio", dataSnapshot.child("bio").getValue(String.class));
-                                    map.put("pict", R.drawable.logo);
+                                    FirebaseStorage mStorageRef = FirebaseStorage.getInstance();
+                                    StorageReference storageReference = mStorageRef.getReference("photoProfile");
+                                    storageReference.child(id + ".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            map.put("pict", Glide.with(Kontak.this).load(uri));
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            map.put("pict", R.drawable.ic_dp_web);
+                                        }
+                                    });
                                     if (dataSnapshot.child("role").getValue(int.class).equals(1)) {
                                         map.put("badge", R.drawable.logo);
                                     } else {

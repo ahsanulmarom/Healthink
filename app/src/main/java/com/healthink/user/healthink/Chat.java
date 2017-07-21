@@ -45,15 +45,6 @@ public class Chat extends Fragment {
         return new Chat();
     }
 
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //Firebase.setAndroidContext(this);
-
-
-
-    }*/
-
     public static class ChatHolder extends RecyclerView.ViewHolder {
         View mView;
 

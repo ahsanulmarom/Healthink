@@ -52,16 +52,17 @@
         tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="7dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView7" />
+        android:layout_marginBottom="-7dp"
+        app:layout_constraintLeft_toRightOf="@+id/imageView7"
+        android:layout_marginLeft="11dp" />
 
     <EditText
         android:id="@+id/signup_username"
-        android:layout_width="0dp"
-        android:layout_height="41dp"
+        android:layout_width="275dp"
+        android:layout_height="38dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="52dp"
         tools:layout_constraintTop_creator="1"
@@ -77,9 +78,10 @@
 
     <EditText
         android:id="@+id/signup_email"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_width="275dp"
+        android:layout_height="38dp"
         android:ems="10"
+        android:textSize="16sp"
         android:inputType="textEmailAddress"
         android:layout_marginStart="53dp"
         android:layout_marginEnd="53dp"
@@ -96,7 +98,7 @@
 
     <EditText
         android:id="@+id/signup_password"
-        android:layout_width="0dp"
+        android:layout_width="275dp"
         android:layout_height="38dp"
         android:ems="10"
         android:inputType="textPassword"
@@ -116,8 +118,8 @@
 
     <EditText
         android:id="@+id/signup_repassword"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_width="275dp"
+        android:layout_height="38dp"
         android:layout_marginBottom="81dp"
         android:layout_marginEnd="54dp"
         android:layout_marginLeft="0dp"
@@ -131,26 +133,8 @@
         tools:layout_constraintRight_creator="1"
         android:layout_marginRight="0dp"
         app:layout_constraintRight_toRightOf="@+id/signup_password"
-        app:layout_constraintHorizontal_bias="0.0" />
-
-    <CheckBox
-        android:id="@+id/chkTaC"
-        style="@android:style/Widget.Holo.Light.CompoundButton.CheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:duplicateParentState="false"
-        android:text="Agree with Terms and Conditions"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="41dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="102dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.384" />
+        app:layout_constraintHorizontal_bias="0.0"
+        tools:layout_editor_absoluteY="363dp" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -220,11 +204,11 @@
         tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="40dp"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/chkTaC" />
+        app:layout_constraintTop_toTopOf="@+id/signup_repassword" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"

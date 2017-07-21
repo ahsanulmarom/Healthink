@@ -2,6 +2,7 @@ package com.healthink.user.healthink;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,7 +95,7 @@ public class Add_friend extends AppCompatActivity {
                     addFr.setImageDrawable(null);
                 } else {
                     for (final DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {  //menemukan username teman
-                            String key = singleSnapshot.getKey();
+                            final String key = singleSnapshot.getKey();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference detilUser = database.getReference("userData");
                             detilUser.child(key).addValueEventListener(new ValueEventListener() {
@@ -102,9 +108,23 @@ public class Add_friend extends AppCompatActivity {
                                             name.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.logo20),null);    //buat nandain di role 1
                                         }
                                     }
+
+                                    FirebaseStorage mStorageRef = FirebaseStorage.getInstance();
+                                    StorageReference storageReference = mStorageRef.getReference("photoProfile");
+                                    storageReference.child(key + ".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Glide.with(Add_friend.this).load(uri).into(pictUser);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            pictUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_dp_web));
+                                        }
+                                    });
+
                                     name.setText(nama + "   ");
                                     bioUser.setText(bio);
-                                    pictUser.setImageDrawable(getDrawable(R.drawable.logo));
 
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                                     final String key = singleSnapshot.getKey();

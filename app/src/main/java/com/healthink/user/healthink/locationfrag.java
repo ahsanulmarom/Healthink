@@ -117,7 +117,7 @@ public class locationfrag extends Fragment {
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(myLoc).zoom(15).build();
                         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        gps.showSettingAlert();
                     }
                 }
             }
